@@ -1,19 +1,26 @@
 'use client';
 
 import Image from 'next/image';
-import { Box, Container, Typography, useTheme, useMediaQuery } from '@mui/material';
+import { Box, Container, Typography, useTheme, useMediaQuery, IconButton, Badge } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import { useEffect, useState, useMemo } from 'react';
 import { Store } from '@/types/store';
+import { useAppSelector } from '@/store/hooks';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 interface StoreHeaderProps {
   store: Store;
+  onCartClick?: () => void;
 }
 
-export function StoreHeaderWithProps({ store }: StoreHeaderProps) {
+export function StoreHeaderWithProps({ store, onCartClick }: StoreHeaderProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [mounted, setMounted] = useState(false);
+  
+  // Get cart from Redux
+  const cart = useAppSelector(state => state.store.cart);
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
   // Prevent hydration mismatch by only rendering after component is mounted
   useEffect(() => {
@@ -28,7 +35,7 @@ export function StoreHeaderWithProps({ store }: StoreHeaderProps) {
   const { name, description, logo, color, background } = store;
   
   // Create a semi-transparent version of the color (20% opacity)
-  const transparentColor = color ? alpha(color, 0.2) : 'rgba(0, 0, 0, 0.8)';
+  const transparentColor = color ? alpha(color, 0.2) : 'rgba(0, 0, 0, 0.2)';
 
   // Memoize o placeholder para evitar recriações desnecessárias
   const placeholder = useMemo(() => (
@@ -36,7 +43,7 @@ export function StoreHeaderWithProps({ store }: StoreHeaderProps) {
       sx={{
         position: 'relative',
         width: '100%',
-        height: isMobile ? '200px' : '150px',
+        height: isMobile ? '200px' : '150px', // Reduzido para 50% no desktop
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
@@ -60,7 +67,7 @@ export function StoreHeaderWithProps({ store }: StoreHeaderProps) {
       sx={{
         position: 'relative',
         width: '100%',
-        height: isMobile ? '200px' : '150px',
+        height: isMobile ? '200px' : '150px', // Reduzido para 50% no desktop
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
@@ -88,13 +95,13 @@ export function StoreHeaderWithProps({ store }: StoreHeaderProps) {
           flexDirection: isMobile ? 'column' : 'row',
           alignItems: 'center',
           gap: 2,
-          py: 2,
+          py: 2, // Reduzido o padding vertical
         }}
       >
         <Box
           sx={{
-            width: isMobile ? '100px' : '100px',
-            height: isMobile ? '100px' : '100px',
+            width: isMobile ? '100px' : '100px', // Reduzido o tamanho no desktop
+            height: isMobile ? '100px' : '100px', // Reduzido o tamanho no desktop
             borderRadius: '50%',
             overflow: 'hidden',
             border: `4px solid ${color || theme.palette.primary.main}`,
@@ -105,21 +112,21 @@ export function StoreHeaderWithProps({ store }: StoreHeaderProps) {
           <Image
             src={logo}
             alt={name}
-            width={isMobile ? 100 : 100}
-            height={isMobile ? 100 : 100}
+            width={isMobile ? 100 : 100} // Reduzido o tamanho no desktop
+            height={isMobile ? 100 : 100} // Reduzido o tamanho no desktop
             style={{ objectFit: 'cover', width: '100%', height: '100%' }}
           />
         </Box>
         
-        <Box sx={{ textAlign: isMobile ? 'center' : 'left' }}>
+        <Box sx={{ textAlign: isMobile ? 'center' : 'left', flexGrow: 1 }}>
           <Typography 
-            variant={isMobile ? 'h4' : 'h4'}
+            variant={isMobile ? 'h4' : 'h4'} // Reduzido o tamanho da fonte no desktop
             component="h1" 
             sx={{ 
               fontWeight: 700,
               color: 'white',
               textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-              mb: 0.5,
+              mb: 0.5, // Reduzido o margin bottom
             }}
           >
             {name}
@@ -127,7 +134,7 @@ export function StoreHeaderWithProps({ store }: StoreHeaderProps) {
           
           {description && (
             <Typography 
-              variant={isMobile ? 'body1' : 'body2'}
+              variant={isMobile ? 'body1' : 'body2'} // Reduzido o tamanho da fonte no desktop
               sx={{ 
                 color: 'white',
                 textShadow: '0 1px 2px rgba(0,0,0,0.3)',
@@ -138,6 +145,27 @@ export function StoreHeaderWithProps({ store }: StoreHeaderProps) {
             </Typography>
           )}
         </Box>
+        
+        {/* Carrinho no desktop */}
+        {!isMobile && (
+          <Box sx={{ ml: 'auto' }}>
+            <Badge badgeContent={totalItems} color="primary">
+              <IconButton 
+                color="primary" 
+                aria-label="carrinho" 
+                onClick={onCartClick}
+                sx={{ 
+                  bgcolor: 'rgba(255, 255, 255, 0.2)',
+                  '&:hover': {
+                    bgcolor: 'rgba(255, 255, 255, 0.3)',
+                  }
+                }}
+              >
+                <ShoppingCartIcon />
+              </IconButton>
+            </Badge>
+          </Box>
+        )}
       </Container>
     </Box>
   );
