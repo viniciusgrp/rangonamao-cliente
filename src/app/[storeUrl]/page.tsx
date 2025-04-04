@@ -3,7 +3,7 @@
 import { useStoreQuery } from '@/services/queries/store';
 import { StoreHeaderWithProps } from '@/components/StoreHeaderWithProps';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
-import { Container, Typography, Alert, Box } from '@mui/material';
+import { Container, Typography, Alert, Box, Grid, Card, CardMedia, CardContent, Divider } from '@mui/material';
 import { useEffect, useState, useMemo } from 'react';
 import { use } from 'react';
 
@@ -20,12 +20,19 @@ export default function StorePage({ params }: { params: Promise<{ storeUrl: stri
   // Memoize o placeholder para evitar recriações desnecessárias
   const placeholder = useMemo(() => (
     <Box sx={{ minHeight: '100vh', background: '#f5f5f5' }}>
-      <Box sx={{ height: '200px', background: 'rgba(0,0,0,0.1)' }} />
+      <Box sx={{ height: '150px', background: 'rgba(0,0,0,0.1)' }} />
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Box sx={{ height: '40px', width: '200px', background: 'rgba(0,0,0,0.1)', mb: 2 }} />
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
           {[1, 2, 3].map((i) => (
-            <Box key={i} sx={{ p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1, width: { xs: '100%', sm: 'calc(50% - 16px)', md: 'calc(33.333% - 16px)' }, height: '150px', background: 'rgba(255,255,255,0.5)' }} />
+            <Box key={i}>
+              <Box sx={{ height: '40px', width: '300px', background: 'rgba(0,0,0,0.1)', mb: 2 }} />
+              <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto', pb: 2 }}>
+                {[1, 2, 3, 4].map((j) => (
+                  <Box key={j} sx={{ minWidth: '200px', height: '200px', background: 'rgba(255,255,255,0.5)', borderRadius: 1 }} />
+                ))}
+              </Box>
+            </Box>
           ))}
         </Box>
       </Container>
@@ -73,27 +80,49 @@ export default function StorePage({ params }: { params: Promise<{ storeUrl: stri
         {store.categories.length === 0 ? (
           <Typography>Nenhuma categoria disponível</Typography>
         ) : (
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, mt: 2 }}>
             {store.categories.map((category) => (
-              <Box 
-                key={category.id}
-                sx={{ 
-                  p: 2, 
-                  border: '1px solid', 
-                  borderColor: 'divider',
-                  borderRadius: 1,
-                  width: { xs: '100%', sm: 'calc(50% - 16px)', md: 'calc(33.333% - 16px)' }
-                }}
-              >
-                <Typography variant="h6" gutterBottom>
+              <Box key={category.id}>
+                <Typography variant="h5" gutterBottom>
                   {category.name}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {category.description}
-                </Typography>
-                <Typography variant="body2" sx={{ mt: 1 }}>
-                  {category.Product.length} produtos
-                </Typography>
+                {category.description && (
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                    {category.description}
+                  </Typography>
+                )}
+                
+                {category.Product.length > 0 ? (
+                  <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto', pb: 2 }}>
+                    {category.Product.map((product) => (
+                      <Card elevation={2} key={product.id} sx={{ minWidth: 200, maxWidth: 300 }}>
+                        <CardMedia
+                          component="img"
+                          height="140"
+                          image={product.image || '/placeholder-product.jpg'}
+                          alt={product.name}
+                        />
+                        <CardContent>
+                          <Typography variant="subtitle1" noWrap>
+                            {product.name}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary" noWrap>
+                            {product.description}
+                          </Typography>
+                          <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
+                            R$ {product.price.toFixed(2)}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </Box>
+                ) : (
+                  <Typography variant="body2" color="text.secondary">
+                    Nenhum produto disponível nesta categoria
+                  </Typography>
+                )}
+                
+                <Divider sx={{ mt: 3 }} />
               </Box>
             ))}
           </Box>

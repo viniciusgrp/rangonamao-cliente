@@ -36,7 +36,7 @@ export function StoreHeaderWithProps({ store }: StoreHeaderProps) {
       sx={{
         position: 'relative',
         width: '100%',
-        height: isMobile ? '200px' : '300px',
+        height: isMobile ? '200px' : '150px',
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
@@ -45,7 +45,7 @@ export function StoreHeaderWithProps({ store }: StoreHeaderProps) {
       }}
     >
       <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Box sx={{ width: isMobile ? '100px' : '150px', height: isMobile ? '100px' : '150px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)' }} />
+        <Box sx={{ width: isMobile ? '100px' : '100px', height: isMobile ? '100px' : '100px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)' }} />
       </Container>
     </Box>
   ), [isMobile, transparentColor]);
@@ -60,7 +60,7 @@ export function StoreHeaderWithProps({ store }: StoreHeaderProps) {
       sx={{
         position: 'relative',
         width: '100%',
-        height: isMobile ? '200px' : '300px',
+        height: isMobile ? '200px' : '150px',
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
@@ -88,13 +88,13 @@ export function StoreHeaderWithProps({ store }: StoreHeaderProps) {
           flexDirection: isMobile ? 'column' : 'row',
           alignItems: 'center',
           gap: 2,
-          py: 4,
+          py: 2,
         }}
       >
         <Box
           sx={{
-            width: isMobile ? '100px' : '150px',
-            height: isMobile ? '100px' : '150px',
+            width: isMobile ? '100px' : '100px',
+            height: isMobile ? '100px' : '100px',
             borderRadius: '50%',
             overflow: 'hidden',
             border: `4px solid ${color || theme.palette.primary.main}`,
@@ -105,21 +105,21 @@ export function StoreHeaderWithProps({ store }: StoreHeaderProps) {
           <Image
             src={logo}
             alt={name}
-            width={isMobile ? 100 : 150}
-            height={isMobile ? 100 : 150}
+            width={isMobile ? 100 : 100}
+            height={isMobile ? 100 : 100}
             style={{ objectFit: 'cover', width: '100%', height: '100%' }}
           />
         </Box>
         
         <Box sx={{ textAlign: isMobile ? 'center' : 'left' }}>
           <Typography 
-            variant={isMobile ? 'h4' : 'h2'} 
+            variant={isMobile ? 'h4' : 'h4'}
             component="h1" 
             sx={{ 
               fontWeight: 700,
               color: 'white',
               textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-              mb: 1,
+              mb: 0.5,
             }}
           >
             {name}
@@ -127,7 +127,7 @@ export function StoreHeaderWithProps({ store }: StoreHeaderProps) {
           
           {description && (
             <Typography 
-              variant={isMobile ? 'body1' : 'h6'} 
+              variant={isMobile ? 'body1' : 'body2'}
               sx={{ 
                 color: 'white',
                 textShadow: '0 1px 2px rgba(0,0,0,0.3)',

@@ -3,16 +3,9 @@ const nextConfig = {
   compiler: {
     emotion: true,
   },
-  transpilePackages: ['@mui/material', '@mui/system', '@mui/icons-material'],
   reactStrictMode: false,
   experimental: {
     optimizeCss: true,
-    serverActions: true,
-    serverComponentsExternalPackages: ['@mui/material', '@mui/system', '@mui/icons-material'],
-  },
-  onDemandEntries: {
-    maxInactiveAge: 25 * 1000,
-    pagesBufferLength: 2,
   },
   images: {
     unoptimized: true,
@@ -28,6 +21,6 @@ const nextConfig = {
     }
     return config;
   },
-}
+};
 
-module.exports = nextConfig 
+module.exports = nextConfig; 
