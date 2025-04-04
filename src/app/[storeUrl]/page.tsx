@@ -44,7 +44,7 @@ export default function StorePage({ params }: { params: Promise<{ storeUrl: stri
     console.log('Carrinho clicado');
   };
 
-  // Memoize o placeholder para evitar recriações desnecessárias
+  // Memoize the placeholder to avoid unnecessary recreations
   const placeholder = useMemo(() => (
     <Box sx={{ minHeight: '100vh', background: '#f5f5f5' }}>
       <Box sx={{ height: '150px', background: 'rgba(0,0,0,0.1)' }} />
@@ -125,8 +125,8 @@ export default function StorePage({ params }: { params: Promise<{ storeUrl: stri
                       <Card 
                         key={product.id} 
                         sx={{ 
-                          minWidth: 200, 
-                          maxWidth: 200,
+                          minWidth: isMobile ? 150 : 200, 
+                          maxWidth: isMobile ? 150 : 200,
                           cursor: 'pointer',
                           transition: 'transform 0.2s, box-shadow 0.2s',
                           '&:hover': {
@@ -136,20 +136,34 @@ export default function StorePage({ params }: { params: Promise<{ storeUrl: stri
                         }}
                         onClick={() => handleProductClick(product)}
                       >
-                        <CardMedia
-                          component="img"
-                          height="140"
-                          image={product.image || '/placeholder-product.jpg'}
-                          alt={product.name}
-                        />
-                        <CardContent>
-                          <Typography variant="subtitle1" noWrap>
+                        <Box sx={{ 
+                          position: 'relative', 
+                          width: '100%', 
+                          paddingTop: '100%', // Aspect ratio 1:1 (quadrado)
+                          overflow: 'hidden'
+                        }}>
+                          <CardMedia
+                            component="img"
+                            image={product.image || '/placeholder-product.jpg'}
+                            alt={product.name}
+                            sx={{
+                              position: 'absolute',
+                              top: 0,
+                              left: 0,
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'cover'
+                            }}
+                          />
+                        </Box>
+                        <CardContent sx={{ p: isMobile ? 1 : 2 }}>
+                          <Typography variant={isMobile ? "body2" : "subtitle1"} noWrap>
                             {product.name}
                           </Typography>
-                          <Typography variant="body2" color="text.secondary" noWrap>
+                          <Typography variant={isMobile ? "caption" : "body2"} color="text.secondary" noWrap>
                             {product.description}
                           </Typography>
-                          <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
+                          <Typography variant={isMobile ? "body2" : "h6"} color="primary" sx={{ mt: 1 }}>
                             R$ {product.price.toFixed(2)}
                           </Typography>
                         </CardContent>

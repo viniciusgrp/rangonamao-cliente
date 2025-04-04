@@ -90,15 +90,37 @@ export function ProductModal({ product, open, onClose }: ProductModalProps) {
     >
       <Paper sx={modalStyle}>
         <Box sx={{ position: 'relative' }}>
-          <Box sx={{ position: 'relative', width: '100%', height: isMobile ? '200px' : '250px' }}>
-            <Image
-              src={product.image || '/placeholder-product.jpg'}
-              alt={product.name}
-              fill
-              style={{ objectFit: 'cover' }}
-              priority
-            />
-          </Box>
+          {isMobile ? (
+            <Box sx={{ 
+              position: 'relative', 
+              width: '100%', 
+              height: '200px',
+              overflow: 'hidden'
+            }}>
+              <Image
+                src={product.image || '/placeholder-product.jpg'}
+                alt={product.name}
+                fill
+                priority
+                style={{ objectFit: 'cover' }}
+              />
+            </Box>
+          ) : (
+            <Box sx={{ 
+              position: 'relative', 
+              width: '100%', 
+              paddingTop: '100%',
+              overflow: 'hidden'
+            }}>
+              <Image
+                src={product.image || '/placeholder-product.jpg'}
+                alt={product.name}
+                fill
+                priority
+                style={{ objectFit: 'cover' }}
+              />
+            </Box>
+          )}
           <IconButton 
             aria-label="close" 
             onClick={onClose} 
@@ -211,7 +233,7 @@ export function ProductModal({ product, open, onClose }: ProductModalProps) {
                   startIcon={<ShoppingCartIcon />}
                   onClick={handleAddToCart}
                 >
-                  Adicionar ao Carrinho
+                  Atualizar
                 </Button>
               </Box>
             )}
