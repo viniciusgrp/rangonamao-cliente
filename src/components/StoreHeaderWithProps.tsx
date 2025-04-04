@@ -28,7 +28,7 @@ export function StoreHeaderWithProps({ store }: StoreHeaderProps) {
   const { name, description, logo, color, background } = store;
   
   // Create a semi-transparent version of the color (20% opacity)
-  const transparentColor = color ? alpha(color, 0.2) : 'rgba(0, 0, 0, 0.2)';
+  const transparentColor = color ? alpha(color, 0.2) : 'rgba(0, 0, 0, 0.8)';
 
   // Memoize o placeholder para evitar recriações desnecessárias
   const placeholder = useMemo(() => (

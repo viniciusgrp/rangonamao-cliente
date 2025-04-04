@@ -6,6 +6,12 @@ const nextConfig = {
   reactStrictMode: false,
   experimental: {
     optimizeCss: true,
+    isrMemoryCacheSize: 0,
+    serverActions: false,
+    appDir: true,
+  },
+  typescript: {
+    ignoreBuildErrors: false,
   },
   images: {
     unoptimized: true,
@@ -19,7 +25,11 @@ const nextConfig = {
         tls: false,
       };
     }
+    config.resolve.symlinks = true;
     return config;
+  },
+  generateBuildId: async () => {
+    return 'build-' + Date.now();
   },
 };
 
